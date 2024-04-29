@@ -18,6 +18,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        \Illuminate\Auth\Events\Login::class => [
+            \App\Listeners\Login\RestoreCartItems::class,
+        ]
     ];
 
     /**
@@ -25,7 +29,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \App\Models\Cover::observe(\App\Observers\CoverObserver::class);
     }
 
     /**

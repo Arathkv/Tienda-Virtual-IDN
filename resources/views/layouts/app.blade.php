@@ -11,6 +11,11 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        @stack('css')
+
+        <!-- Font awesome -->
+        <script src="https://kit.fontawesome.com/776d89f5ca.js" crossorigin="anonymous"></script>
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -21,25 +26,41 @@
         <x-banner />
 
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @livewire('navigation-menu')
-
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+            {{--@livewire('navigation-menu')--}}
+            @livewire('navigation')
 
             <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
+
+            <div class="mt-16">
+                @include('layouts.partials.app.footer')
+            </div>
+
         </div>
 
         @stack('modals')
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         @livewireScripts
+
+        @stack('js')
+
+        @if (session('swal'))
+            <!-- Script de alerta -->
+            <script>
+                Swal.fire({!! json_encode(session('swal')) !!});
+            </script>
+
+        @endif
+
+        <script>
+            Livewire.on('swal', data => {
+                Swal.fire(data[0]);
+            });
+        </script>
+
     </body>
 </html>
